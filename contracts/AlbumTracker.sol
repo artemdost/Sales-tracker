@@ -6,9 +6,9 @@ import "./Album.sol";
 
 contract AlbumTracker is Ownable {
     event AlbumStateChanged(
+        address _albumAddress,
         uint _albumIndex,
-        uint _stateNum,
-        address _albumAddress
+        uint _stateNum
     );
     enum AlbumState {
         Created,
@@ -26,7 +26,7 @@ contract AlbumTracker is Ownable {
     constructor() Ownable(msg.sender) {}
 
     mapping(uint => AlbumProduct) public albums;
-    uint currentIndex;
+    uint public currentIndex;
 
     function createAlbum(uint _price, string memory _title) public {
         Album newAlbum = new Album(_price, _title, currentIndex, this);
@@ -37,9 +37,9 @@ contract AlbumTracker is Ownable {
         albums[currentIndex].title = _title;
 
         emit AlbumStateChanged(
+            address(newAlbum),
             currentIndex,
-            uint(albums[currentIndex].state),
-            address(newAlbum)
+            uint(albums[currentIndex].state)
         );
 
         currentIndex++;
@@ -58,9 +58,9 @@ contract AlbumTracker is Ownable {
         albums[_index].state = AlbumState.Paid;
 
         emit AlbumStateChanged(
+            address(albums[_index].album),
             _index,
-            uint(albums[_index].state),
-            address(albums[_index].album)
+            uint(albums[_index].state)
         );
     }
 
@@ -73,9 +73,9 @@ contract AlbumTracker is Ownable {
         albums[_index].state = AlbumState.Delivered;
 
         emit AlbumStateChanged(
+            address(albums[_index].album),
             _index,
-            uint(albums[_index].state),
-            address(albums[_index].album)
+            uint(albums[_index].state)
         );
     }
 }
