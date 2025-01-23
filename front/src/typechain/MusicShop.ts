@@ -23,11 +23,36 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export declare namespace MusicShop {
+  export type AlbumStruct = {
+    index: BigNumberish;
+    uid: BytesLike;
+    title: string;
+    price: BigNumberish;
+    quantity: BigNumberish;
+  };
+
+  export type AlbumStructOutput = [
+    index: bigint,
+    uid: string,
+    title: string,
+    price: bigint,
+    quantity: bigint
+  ] & {
+    index: bigint;
+    uid: string;
+    title: string;
+    price: bigint;
+    quantity: bigint;
+  };
+}
+
 export interface MusicShopInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "addAlbum"
       | "albums"
+      | "allAlbums"
       | "buy"
       | "currentIndex"
       | "currentOrderId"
@@ -49,6 +74,7 @@ export interface MusicShopInterface extends Interface {
     functionFragment: "albums",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "allAlbums", values?: undefined): string;
   encodeFunctionData(functionFragment: "buy", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "currentIndex",
@@ -74,6 +100,7 @@ export interface MusicShopInterface extends Interface {
 
   decodeFunctionResult(functionFragment: "addAlbum", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "albums", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "allAlbums", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "buy", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "currentIndex",
@@ -191,6 +218,8 @@ export interface MusicShop extends BaseContract {
     "view"
   >;
 
+  allAlbums: TypedContractMethod<[], [MusicShop.AlbumStructOutput[]], "view">;
+
   buy: TypedContractMethod<[_index: BigNumberish], [void], "payable">;
 
   currentIndex: TypedContractMethod<[], [bigint], "view">;
@@ -252,6 +281,9 @@ export interface MusicShop extends BaseContract {
     ],
     "view"
   >;
+  getFunction(
+    nameOrSignature: "allAlbums"
+  ): TypedContractMethod<[], [MusicShop.AlbumStructOutput[]], "view">;
   getFunction(
     nameOrSignature: "buy"
   ): TypedContractMethod<[_index: BigNumberish], [void], "payable">;

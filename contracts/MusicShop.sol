@@ -100,6 +100,17 @@ contract MusicShop is ERC165 {
         emit OrderDelivered(currentOrder.albumUid, currentOrder.customer);
     }
 
+    function allAlbums() public view returns (Album[] memory) {
+        uint totalAlbums = albums.length;
+        Album[] memory albumsList = new Album[](totalAlbums);
+
+        for (uint i = 0; i < totalAlbums; ++i) {
+            albumsList[i] = albums[i];
+        }
+
+        return albumsList;
+    }
+
     receive() external payable {
         revert("Please use the buy function to purchase albums!");
     }
